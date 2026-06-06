@@ -21,12 +21,22 @@ module.exports = (req, res) => {
     const slug = Array.isArray(raw) ? raw.join('/') : String(raw || '');
     sendSvg(buildBadge(slug, req.query || {}));
   } catch (err) {
-    // Never 500 on a badge endpoint — return a visible "error" badge instead.
+    // Never 500 on a badge endpoint — return a visible "error" badge whose
+    // message carries the failure reason (truncated), so the cause is readable
+    // straight from the rendered badge / the X-Badge-Error header.
+    const reason = String((err && err.message) || err || 'error')
+      .replace(/[-_]/g, ' ')
+      .slice(0, 60);
     try {
-      sendSvg(buildBadge('badge-error-red', { style: 'flat' }));
+      res.setHeader('X-Badge-Error', reason.slice(0, 120));
+    } catch (_) {
+      /* headers already sent */
+    }
+    try {
+      sendSvg(buildBadge(`badge-${reason}-red`, { style: 'flat' }));
     } catch (_) {
       res.statusCode = 500;
-      res.end('badge error');
+      res.end('badge error: ' + reason);
     }
   }
 };
