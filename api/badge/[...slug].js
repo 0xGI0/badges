@@ -1,11 +1,9 @@
-'use strict';
-
-const { buildBadge } = require('../../lib/render');
+import { buildBadge } from '../../lib/render.js';
 
 // Vercel serverless function. Mounted at /api/badge/* and (via vercel.json
 // rewrite) also at /badge/* so the URLs are drop-in compatible with
 // https://img.shields.io/badge/... and custom-icon-badges.demolab.com/badge/...
-module.exports = (req, res) => {
+export default function handler(req, res) {
   const sendSvg = (svg) => {
     res.setHeader('Content-Type', 'image/svg+xml;charset=utf-8');
     res.setHeader(
@@ -39,4 +37,4 @@ module.exports = (req, res) => {
       res.end('badge error: ' + reason);
     }
   }
-};
+}

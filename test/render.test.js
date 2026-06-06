@@ -1,11 +1,9 @@
-'use strict';
-
 // Renders every badge currently used in the profile README through the local
 // engine and asserts the logo is embedded and the text is correct.
 // Run with: npm test
 
-const assert = require('assert');
-const { buildBadge, parsePath } = require('../lib/render');
+import assert from 'assert';
+import { buildBadge, parsePath } from '../lib/render.js';
 
 function q(str) {
   const out = {};

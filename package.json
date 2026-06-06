@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Self-hosted shields.io-compatible static badge service (simple-icons + GitHub Octicons)",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "test": "node test/render.test.js"
   },
